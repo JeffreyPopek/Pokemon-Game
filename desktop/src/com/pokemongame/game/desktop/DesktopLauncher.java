@@ -7,6 +7,9 @@ import com.pokemongame.game.pokemongame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.height = pokemongame.HEIGHT;
+		config.width = pokemongame.WIDTH;
+		config.title = pokemongame.TITLE;
 		new LwjglApplication(new pokemongame(), config);
 	}
 }
