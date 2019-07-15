@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.pokemongame.game.pokemongame;
 
 public class Player {
-    private static final int MOVEMENT = 200;
+    private static final int MOVEMENT = 100;
 
     private PlayerDirection direction;
     private Rectangle bounds;
@@ -53,7 +53,7 @@ public class Player {
 
     public void move(PlayerDirection direction){
 
-        System.out.println(position.x);
+        //System.out.println(position.x);
         if (direction == PlayerDirection.LEFT && position.x > 0){
             this.direction = direction;
         } else if ( direction == PlayerDirection.RIGHT && position.x < 190){

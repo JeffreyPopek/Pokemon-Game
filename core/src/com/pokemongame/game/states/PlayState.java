@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Charizard;
 import com.pokemongame.game.sprites.Player;
