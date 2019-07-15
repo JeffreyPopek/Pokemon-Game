@@ -17,6 +17,7 @@ public class Player {
     private Animation currentAnimation;
     private Texture texture;
     private Vector2 position;
+    private Vector2 positionBeforeAnimation;
     private Vector2 velocity;
     private int health;
     private boolean collided;
@@ -57,6 +58,8 @@ public class Player {
         this.direction = direction;
     }
 
+
+
     public void stand() {
         this.direction = PlayerDirection.NONE;
     }
@@ -90,15 +93,25 @@ public class Player {
     }
 
     public void attack() {
-        Texture attackTexture = new Texture("pikachu_back_spritesheet.png");
-        currentAnimation = new Animation(new TextureRegion(texture), 113, 5,23,3.2f);
+        float cycleTime = 1.8f;
+        texture = new Texture("pikachu-attack.png");
+        this.currentAnimation =  new Animation(new TextureRegion(texture), 21, 5,5,cycleTime);
+
+        this.positionBeforeAnimation = new Vector2(this.position.x,this.position.y);
+        this.position.x = 0;
+        this.position.y = 0;
+
         Timer timer = new Timer();
         timer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
+                position.x = positionBeforeAnimation.x;
+                position.y = positionBeforeAnimation.y;
+                texture = new Texture("pikachu_back_spritesheet.png");
+                currentAnimation = new Animation(new TextureRegion(texture), 113, 5,23,3.2f);
                 busy = false;
             }
-        }, 3.5f);
+        }, cycleTime);
 
         this.busy = true;
     }
