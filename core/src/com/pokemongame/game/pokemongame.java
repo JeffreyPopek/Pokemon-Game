@@ -24,7 +24,7 @@ public class pokemongame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
-		gsm.push(new PlayState(gsm));
+		gsm.push(new MenuState(gsm));
 		Gdx.gl.glClearColor(0,0,1,1);
 	}
 
