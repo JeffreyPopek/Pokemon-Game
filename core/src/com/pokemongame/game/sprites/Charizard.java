@@ -15,6 +15,7 @@ public class Charizard {
     private Rectangle bounds;
     private Texture texture;
     private Vector2 position;
+    private Vector2 positionBeforeAnimation;
     private Vector2 velocity;
     private Animation currentAnimation;
 
@@ -39,26 +40,28 @@ public class Charizard {
         return currentAnimation.getFrame();
     }
 
-    public int getHealth() { return health; }
+    public int getHealth() {
+        return health;
+    }
 
-    public Charizard(int x, int y){
+    public Charizard(int x, int y) {
         health = 100;
         busy = false;
-        position = new Vector2(x,y);
+        position = new Vector2(x, y);
         collided = false;
-        velocity = new Vector2(0,0);
+        velocity = new Vector2(0, 0);
         texture = new Texture("charizard_front_spritesheet.png");
-        currentAnimation = new Animation(new TextureRegion(texture), 143, 5,29,3.5f);
+        currentAnimation = new Animation(new TextureRegion(texture), 143, 5, 29, 3.5f);
         bounds = new Rectangle(position.x, position.y, texture.getWidth() / 3, texture.getHeight());
     }
 
-    public void update(float dt){
+    public void update(float dt) {
 
-        if (currentAnimation != null){
+        if (currentAnimation != null) {
             currentAnimation.update(dt);
         }
 
-        velocity.scl(1/dt);
+        velocity.scl(1 / dt);
 
         bounds.setPosition(position.x, position.y);
     }
@@ -73,9 +76,10 @@ public class Charizard {
         return busy;
     }
 
-    public void attack() {
-        Texture attackTexture = new Texture("charizard_front_spritesheet.png");
-        currentAnimation = new Animation(new TextureRegion(attackTexture), 143, 5,29,3.5f);
+    /*public void attack() {
+
+        Texture attackTexture = new Texture("charizard-attack.png");
+        currentAnimation = new Animation(new TextureRegion(attackTexture), 18, 5,4,1.8f);
         Timer timer = new Timer();
         timer.scheduleTask(new Timer.Task() {
             @Override
@@ -85,4 +89,30 @@ public class Charizard {
         }, 3.5f);
         this.busy = true;
     }
+} */
+
+    public void attack() {
+        float cycleTime = 0.7f;
+        texture = new Texture("charizard_attack_spritesheet.png");
+        this.currentAnimation = new Animation(new TextureRegion(texture), 26, 5, 6, cycleTime);
+
+        this.positionBeforeAnimation = new Vector2(this.position.x, this.position.y);
+
+
+
+        Timer timer = new Timer();
+        timer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                position.x = positionBeforeAnimation.x;
+                position.y = positionBeforeAnimation.y;
+                texture = new Texture("charizard_front_spritesheet.png");
+                currentAnimation = new Animation(new TextureRegion(texture), 143, 5, 29, 3.2f);
+                busy = false;
+            }
+        }, cycleTime);
+
+        this.busy = true;
+    }
+
 }

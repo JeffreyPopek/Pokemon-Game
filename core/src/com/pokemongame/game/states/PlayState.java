@@ -37,7 +37,7 @@ public class PlayState extends State {
         playingState = PlayingState.INTRO;
 
         player = new Player(80, 120);
-        charizard = new Charizard(80, 300);
+        charizard = new Charizard(80, 295);
         background = new Texture("bg.png");
 
         font = new BitmapFont();
@@ -64,7 +64,7 @@ public class PlayState extends State {
             playingState = PlayingState.DEFENDING;
             charizard.attack();
 
-            messages.add(new Message(ENEMY, "I'm attacking!"));
+            messages.add(new Message(ENEMY, "Opponent's turn"));
             getNextMessage();
 
             currentActor = PLAYER;
@@ -76,7 +76,7 @@ public class PlayState extends State {
             playingState = PlayingState.ATTACKING;
             player.attack();
 
-            messages.add(new Message(PLAYER, "I'm attacking!"));
+            messages.add(new Message(PLAYER, "Your turn"));
             getNextMessage();
 
             currentActor = ENEMY;
@@ -164,21 +164,29 @@ public class PlayState extends State {
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
         sb.draw(charizard.getTexture(), charizard.getPosition().x, charizard.getPosition().y);
         this.renderMessageOnSpriteBatch(sb);
+        this.renderLifeTotal(sb);
         sb.end();
 
     }
 
     private void renderMessageOnSpriteBatch(SpriteBatch sb){
+        font.setColor(255,255,255,1);
         if (this.currentMessage != null) {
             if (this.currentMessage.getSender() == PLAYER){
-                font.draw(sb, this.currentMessage.getMessage(), 10, player.getPosition().y + 100);
+                font.draw(sb, this.currentMessage.getMessage(), 75, 395);
             } else {
-                font.draw(sb, this.currentMessage.getMessage(), 10, charizard.getPosition().y - 10);
+                font.draw(sb, this.currentMessage.getMessage(), 75, 395);
             }
 
         }
     }
 
+    private void renderLifeTotal(SpriteBatch sb){
+        font.setColor(0,255,0,1);
+        font.draw(sb, String.valueOf(player.getHealth()), 2, 20);
+        font.setColor(255,0,0,1);
+        font.draw(sb, String.valueOf(charizard.getHealth()), 2, 395);
+    }
     @Override
     public void dispose() {
         background.dispose();
