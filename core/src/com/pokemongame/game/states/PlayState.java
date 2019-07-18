@@ -9,9 +9,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Charizard;
+import com.pokemongame.game.sprites.EnemyAttack;
 import com.pokemongame.game.sprites.Player;
 import com.pokemongame.game.sprites.PlayerDirection;
 
+import java.util.List;
+
+import static com.pokemongame.game.states.PlayingState.DEFENDING;
 import static java.lang.Thread.sleep;
 
 public class PlayState extends State {
@@ -30,6 +34,8 @@ public class PlayState extends State {
     private Texture background;
     private Texture ground;
     private Vector2 groundPosition1, groundPosition2;
+    private EnemyAttack fireball1;
+    private List < EnemyAttack > fireballs;
 
 
     public PlayState(GameStateManager gsm) {
@@ -55,14 +61,15 @@ public class PlayState extends State {
     }
 
     private void beginBattle(){
-        this.playingState = PlayingState.DEFENDING;
+        this.playingState = DEFENDING;
         fight();
     }
 
     private void enemyFight(){
         if (currentActor == ENEMY && !(charizard.isBusy() || player.isBusy())) {
-            playingState = PlayingState.DEFENDING;
+            playingState = DEFENDING;
             charizard.attack();
+            fireball1 = new EnemyAttack(charizard.getPosition().x, charizard.getPosition().y);
 
             messages.add(new Message(ENEMY, "Opponent's turn"));
             getNextMessage();
@@ -96,6 +103,8 @@ public class PlayState extends State {
     public void handleInput() {
 
         if(Gdx.input.justTouched()){
+            System.out.println("mouseY "+ Gdx.input.getY());
+            System.out.println("mouseX "+ Gdx.input.getX());
             switch (playingState){
                 case INTRO:
                     isWaitingForUser = false;
@@ -152,6 +161,9 @@ public class PlayState extends State {
         super.update(dt);
         player.update(dt);
         charizard.update(dt);
+        if(playingState == DEFENDING){
+            fireball1.update(dt);
+        }
     }
 
     @Override
@@ -163,6 +175,12 @@ public class PlayState extends State {
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
         sb.draw(charizard.getTexture(), charizard.getPosition().x, charizard.getPosition().y);
+        if(playingState == DEFENDING){
+            sb.draw(fireball1.getTexture(), fireball1.getPosition().x, fireball1.getPosition().y);
+            //System.out.println("sdssd");
+        }
+
+
         this.renderMessageOnSpriteBatch(sb);
         this.renderLifeTotal(sb);
         sb.end();
