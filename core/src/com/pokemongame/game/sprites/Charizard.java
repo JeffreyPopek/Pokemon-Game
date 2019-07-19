@@ -45,7 +45,7 @@ public class Charizard {
     }
 
     public Charizard(int x, int y) {
-        health = 100;
+        health = 2000;
         busy = false;
         position = new Vector2(x, y);
         collided = false;
@@ -91,9 +91,13 @@ public class Charizard {
     }
 } */
 
+    public void takeDamage(int damage){
+        health -= damage;
+    }
+
     public void attack() {
         float cycleTime = 0.7f;
-        texture = new Texture("charizard_attack_spritesheet.png");
+        texture = new Texture("help_button.png");
         this.currentAnimation = new Animation(new TextureRegion(texture), 26, 5, 6, cycleTime);
 
         this.positionBeforeAnimation = new Vector2(this.position.x, this.position.y);

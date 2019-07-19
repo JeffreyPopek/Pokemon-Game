@@ -11,13 +11,15 @@ public class MenuState extends State {
 
     private Texture background;
     private Texture playButton;
-    private Texture settingsButton;
+    private Texture helpButton;
+    private Texture levelsButton;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
         background = new Texture("bg.png");
         playButton = new Texture("playbtn.png");
-        settingsButton = new Texture("settings_button.png");
+        helpButton = new Texture("help_button.png");
+        levelsButton = new Texture("levels_button.png");
 
     }
 
@@ -33,6 +35,10 @@ public class MenuState extends State {
 
 
         }
+//        if(Gdx.input.getX() > 170 && Gdx.input.getX() < 336
+//                && Gdx.input.getY() < 381 && Gdx.input.getY() > 293){
+//            gsm.set(new PlayState(gsm));
+
     }
 
     @Override
@@ -51,7 +57,8 @@ public class MenuState extends State {
                 cam.position.y);
 //        System.out.println("settingsbuttonWidth; "+playButton.getWidth()); //104
 //        System.out.println("settingsbuttonHeight; "+playButton.getHeight()); //59
-        sb.draw(settingsButton, 2, 20);
+        sb.draw(helpButton, 2, 20);
+        sb.draw(levelsButton, 70, 20);
 
         sb.end();
     }

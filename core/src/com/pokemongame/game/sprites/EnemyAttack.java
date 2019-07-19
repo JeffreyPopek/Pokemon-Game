@@ -11,7 +11,11 @@ public class EnemyAttack {
     private Vector2 position;
     private Vector2 velocity;
     private Rectangle bounds;
+    private int damage;
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
     public TextureRegion getTexture() {
         return currentAnimation.getFrame();
     }
@@ -20,10 +24,12 @@ public class EnemyAttack {
     }
 
     public EnemyAttack(float x, float y){
+        damage = 2;
         position = new Vector2(x, y);
         velocity = new Vector2(0, -100);
-        texture = new Texture("charizard_front_spritesheet.png");
-        currentAnimation = new Animation(new TextureRegion(texture),  143, 5, 29, 3.2f);
+        texture = new Texture("fireball_sheet.png");
+        currentAnimation = new Animation(new TextureRegion(texture),  10, 5, 2, 2.0f);
+        bounds = new Rectangle(position.x, position.y, 40, 40);
     }
 
     public void update(float dt) {
@@ -34,7 +40,7 @@ public class EnemyAttack {
         position.add(0, velocity.y * dt);
 
 
-//        bounds.setPosition(getPosition().x, getPosition().y);
+        bounds.setPosition(getPosition().x, getPosition().y);
     }
 
 
@@ -43,6 +49,12 @@ public class EnemyAttack {
         texture.dispose();
     }
 
+    public int getDamage() {
+        return damage;
+    }
+    public boolean collides(Rectangle player){
+        return player.overlaps(bounds);
+    }
 
 }
 

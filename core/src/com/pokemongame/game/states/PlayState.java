@@ -4,17 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.pokemongame.game.pokemongame;
+import com.pokemongame.game.sprites.Animation;
+import com.pokemongame.game.sprites.Button;
 import com.pokemongame.game.sprites.Charizard;
 import com.pokemongame.game.sprites.EnemyAttack;
 import com.pokemongame.game.sprites.Player;
+import com.pokemongame.game.sprites.PlayerAttack;
 import com.pokemongame.game.sprites.PlayerDirection;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.pokemongame.game.states.PlayingState.ATTACKING;
 import static com.pokemongame.game.states.PlayingState.DEFENDING;
 import static java.lang.Thread.sleep;
 
@@ -36,16 +42,21 @@ public class PlayState extends State {
     private Vector2 groundPosition1, groundPosition2;
     private EnemyAttack fireball1;
     private List < EnemyAttack > fireballs;
+    private Button attack1;
+    private PlayerAttack lightning;
+    private boolean ButtonClicks;
 
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
         playingState = PlayingState.INTRO;
 
+        fireballs = new ArrayList<EnemyAttack>();
         player = new Player(80, 120);
         charizard = new Charizard(80, 295);
         background = new Texture("bg.png");
-
+        attack1 = new Button(10, 25, "Thunderbolt.jpg");
+        ButtonClicks = false;
         font = new BitmapFont();
         font.getData().setScale(1.5f);
 
@@ -54,7 +65,6 @@ public class PlayState extends State {
 
     public void loadIntroMessages(){
         messages = new Array<Message>();
-        messages.add(new Message(PLAYER, "Make your move!"));
         messages.add(new Message(PLAYER, "OK..."));
         messages.add(new Message(ENEMY, "Let's play!"));
         getNextMessage();
@@ -69,7 +79,10 @@ public class PlayState extends State {
         if (currentActor == ENEMY && !(charizard.isBusy() || player.isBusy())) {
             playingState = DEFENDING;
             charizard.attack();
-            fireball1 = new EnemyAttack(charizard.getPosition().x, charizard.getPosition().y);
+            fireballs.add(new EnemyAttack(charizard.getPosition().x, charizard.getPosition().y));
+            fireballs.add(new EnemyAttack(10, charizard.getPosition().y));
+            fireballs.add(new EnemyAttack(180, charizard.getPosition().y));
+//            fireball1 = new EnemyAttack(charizard.getPosition().x, charizard.getPosition().y);
 
             messages.add(new Message(ENEMY, "Opponent's turn"));
             getNextMessage();
@@ -80,7 +93,8 @@ public class PlayState extends State {
 
     private void playerFight(){
         if(currentActor == PLAYER && !(charizard.isBusy() || player.isBusy())) {
-            playingState = PlayingState.ATTACKING;
+            playingState = ATTACKING;
+            player.setPosition(80, 120);
             player.attack();
 
             messages.add(new Message(PLAYER, "Your turn"));
@@ -103,8 +117,7 @@ public class PlayState extends State {
     public void handleInput() {
 
         if(Gdx.input.justTouched()){
-            System.out.println("mouseY "+ Gdx.input.getY());
-            System.out.println("mouseX "+ Gdx.input.getX());
+            //System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
                 case INTRO:
                     isWaitingForUser = false;
@@ -114,10 +127,31 @@ public class PlayState extends State {
                     }
                     break;
                 case ATTACKING:
+
                     isWaitingForUser = false;
-                    fight();
+                    if(Gdx.input.getX() < 180 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 728){
+                        System.out.println("button clicked");
+                        if(ButtonClicks == false){
+                            lightning = new PlayerAttack(35, 120);
+                            charizard.takeDamage(lightning.getDamage());
+                            ButtonClicks = true;
+                        }
+                        fight();
+                    }
+
+
+//                    break;
                 case DEFENDING:
-                    fight();
+
+                    if(fireballs.size() > 0) {
+                        if (fireballs.get(0).getPosition().y < 0) {
+                            fight();
+                            fireballs.clear();
+                            ButtonClicks = false;
+                            lightning = null;
+
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -162,8 +196,18 @@ public class PlayState extends State {
         player.update(dt);
         charizard.update(dt);
         if(playingState == DEFENDING){
-            fireball1.update(dt);
+            for(int i = 0; i < fireballs.size(); i++){
+                fireballs.get(i).update(dt);
+                if(fireballs.get(i).collides(player.getBounds())){
+                    player.takeDamage(fireballs.get(i).getDamage());
+                }
+            }
+//            fireball1.update(dt);
         }
+        if(playingState == ATTACKING && lightning != null){
+            lightning.update(dt);
+        }
+
     }
 
     @Override
@@ -175,11 +219,21 @@ public class PlayState extends State {
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
         sb.draw(charizard.getTexture(), charizard.getPosition().x, charizard.getPosition().y);
+
+
         if(playingState == DEFENDING){
-            sb.draw(fireball1.getTexture(), fireball1.getPosition().x, fireball1.getPosition().y);
+            for(int i = 0; i < fireballs.size(); i++){
+                sb.draw(fireballs.get(i).getTexture(), fireballs.get(i).getPosition().x, fireballs.get(i).getPosition().y, 40, 40);
+
+                //System.out.println(fireballs.get(i).getPosition().y);
+            }
+//            sb.draw(fireball1.getTexture(), fireball1.getPosition().x, fireball1.getPosition().y);
             //System.out.println("sdssd");
         }
-
+        if(playingState == ATTACKING && lightning != null){
+            sb.draw(lightning.getTexture(), lightning.getPosition().x, lightning.getPosition().y, 140, 400);
+        }
+        sb.draw(attack1.getTexture(), attack1.getPosition().x, attack1.getPosition().y, 80, 80);
 
         this.renderMessageOnSpriteBatch(sb);
         this.renderLifeTotal(sb);
