@@ -131,27 +131,16 @@ public class PlayState extends State {
                     isWaitingForUser = false;
                     if(Gdx.input.getX() < 180 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 728){
                         System.out.println("button clicked");
-                        if(ButtonClicks == false){
+                        if(ButtonClicks == false) {
                             lightning = new PlayerAttack(35, 120);
                             charizard.takeDamage(lightning.getDamage());
                             ButtonClicks = true;
                         }
-                        fight();
                     }
-
-
-//                    break;
+                    break;
                 case DEFENDING:
 
-                    if(fireballs.size() > 0) {
-                        if (fireballs.get(0).getPosition().y < 0) {
-                            fight();
-                            fireballs.clear();
-                            ButtonClicks = false;
-                            lightning = null;
 
-                        }
-                    }
                     break;
                 default:
                     break;
@@ -202,10 +191,19 @@ public class PlayState extends State {
                     player.takeDamage(fireballs.get(i).getDamage());
                 }
             }
-//            fireball1.update(dt);
+        }
+        if(fireballs.size() > 0) {
+            if (fireballs.get(0).getPosition().y < 0) {
+                fight();
+                fireballs.clear();
+                ButtonClicks = false;
+                lightning = null;
+
+            }
         }
         if(playingState == ATTACKING && lightning != null){
             lightning.update(dt);
+            fight();
         }
 
     }
