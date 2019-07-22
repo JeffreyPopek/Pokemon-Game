@@ -11,15 +11,17 @@ public class MenuState extends State {
 
     private Texture background;
     private Texture playButton;
-    private Texture helpButton;
+ //   private Texture helpButton;
     private Texture levelsButton;
+    private Texture title;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
         background = new Texture("bg.png");
         playButton = new Texture("playbtn.png");
-        helpButton = new Texture("help_button.png");
+        //helpButton = new Texture("help_button.png");
         levelsButton = new Texture("levels_button.png");
+        title = new Texture("title.png");
 
     }
 
@@ -57,8 +59,9 @@ public class MenuState extends State {
                 cam.position.y);
 //        System.out.println("settingsbuttonWidth; "+playButton.getWidth()); //104
 //        System.out.println("settingsbuttonHeight; "+playButton.getHeight()); //59
-        sb.draw(helpButton, 2, 20);
-        sb.draw(levelsButton, 70, 20);
+       // sb.draw(helpButton, 2, 20);
+        sb.draw(title, 20, 250);
+        sb.draw(levelsButton, 85, 15);
 
         sb.end();
     }

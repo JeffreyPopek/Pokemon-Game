@@ -97,7 +97,7 @@ public class Charizard {
 
     public void attack() {
         float cycleTime = 0.7f;
-        texture = new Texture("charizard_attack_spritesheet.png");
+        texture = new Texture("charizard_attack_spritesheet_fire.png");
         this.currentAnimation = new Animation(new TextureRegion(texture), 26, 5, 6, cycleTime);
 
         this.positionBeforeAnimation = new Vector2(this.position.x, this.position.y);

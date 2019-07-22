@@ -24,7 +24,7 @@ public class EnemyAttack {
     }
 
     public EnemyAttack(float x, float y){
-        damage = 2;
+        damage = 5;
         position = new Vector2(x, y);
         velocity = new Vector2(0, -100);
         texture = new Texture("fireball_sheet.png");

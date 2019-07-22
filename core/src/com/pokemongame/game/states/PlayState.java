@@ -13,9 +13,13 @@ import com.pokemongame.game.sprites.Animation;
 import com.pokemongame.game.sprites.Button;
 import com.pokemongame.game.sprites.Charizard;
 import com.pokemongame.game.sprites.EnemyAttack;
+import com.pokemongame.game.sprites.EnemyAttackTwo;
 import com.pokemongame.game.sprites.Player;
 import com.pokemongame.game.sprites.PlayerAttack;
 import com.pokemongame.game.sprites.PlayerDirection;
+import java.util.Random;
+import com.badlogic.gdx.audio.Music;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +49,10 @@ public class PlayState extends State {
     private Button attack1;
     private PlayerAttack lightning;
     private boolean ButtonClicks;
+    private Random number;
+    private Music music;
+    private EnemyAttackTwo enemyattack2;
+    private int pattern;
 
 
     public PlayState(GameStateManager gsm) {
@@ -55,12 +63,17 @@ public class PlayState extends State {
         player = new Player(80, 120);
         charizard = new Charizard(80, 295);
         background = new Texture("bg.png");
-        attack1 = new Button(10, 25, "Thunderbolt.jpg");
+        attack1 = new Button(1, 25, "Thunderbolt_button.png");
         ButtonClicks = false;
         font = new BitmapFont();
         font.getData().setScale(1.5f);
+        number = new Random();
 
         loadIntroMessages();
+        music = Gdx.audio.newMusic(Gdx.files.internal("playstate_music.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
     }
 
     public void loadIntroMessages(){
@@ -79,10 +92,33 @@ public class PlayState extends State {
         if (currentActor == ENEMY && !(charizard.isBusy() || player.isBusy())) {
             playingState = DEFENDING;
             charizard.attack();
-            fireballs.add(new EnemyAttack(charizard.getPosition().x, charizard.getPosition().y));
-            fireballs.add(new EnemyAttack(10, charizard.getPosition().y));
-            fireballs.add(new EnemyAttack(180, charizard.getPosition().y));
+            pattern = number.nextInt(4);
+            //pattern = 3;
+
 //            fireball1 = new EnemyAttack(charizard.getPosition().x, charizard.getPosition().y);
+
+            if(pattern == 0){
+                fireballs.add(new EnemyAttack(20, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(60, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(100, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(200, charizard.getPosition().y));
+
+            }else if(pattern == 1){
+                fireballs.add(new EnemyAttack(200, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(100, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(150, charizard.getPosition().y));
+
+
+            }else if(pattern == 2){
+                fireballs.add(new EnemyAttack(10, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(60, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(100, charizard.getPosition().y));
+                fireballs.add(new EnemyAttack(140, charizard.getPosition().y));
+
+
+            } else if(pattern == 3){
+                enemyattack2 = new EnemyAttackTwo(60, 250);
+            }
 
             messages.add(new Message(ENEMY, "Opponent's turn"));
             getNextMessage();
@@ -117,7 +153,7 @@ public class PlayState extends State {
     public void handleInput() {
 
         if(Gdx.input.justTouched()){
-            //System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
+            System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
                 case INTRO:
                     isWaitingForUser = false;
@@ -129,9 +165,10 @@ public class PlayState extends State {
                 case ATTACKING:
 
                     isWaitingForUser = false;
-                    if(Gdx.input.getX() < 180 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 728){
+                    if(Gdx.input.getX() < 157 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645){
                         System.out.println("button clicked");
                         if(ButtonClicks == false) {
+                            player.attack();
                             lightning = new PlayerAttack(35, 120);
                             charizard.takeDamage(lightning.getDamage());
                             ButtonClicks = true;
@@ -183,12 +220,26 @@ public class PlayState extends State {
     public void update(float dt) {
         super.update(dt);
         player.update(dt);
+        if(player.getHealth() <= 0){
+            gsm.set(new GameOverState(gsm));
+        }
+
+        if(charizard.getHealth() <= 0){
+            gsm.set(new WinState(gsm));
+        }
         charizard.update(dt);
         if(playingState == DEFENDING){
-            for(int i = 0; i < fireballs.size(); i++){
-                fireballs.get(i).update(dt);
-                if(fireballs.get(i).collides(player.getBounds())){
-                    player.takeDamage(fireballs.get(i).getDamage());
+            if(pattern == 3){
+                enemyattack2.update(dt);
+                if(enemyattack2.collides(player.getBounds())){
+                    player.takeDamage(enemyattack2.getDamage());
+                }
+            }else {
+                for (int i = 0; i < fireballs.size(); i++) {
+                    fireballs.get(i).update(dt);
+                    if (fireballs.get(i).collides(player.getBounds())) {
+                        player.takeDamage(fireballs.get(i).getDamage());
+                    }
                 }
             }
         }
@@ -199,6 +250,16 @@ public class PlayState extends State {
                 ButtonClicks = false;
                 lightning = null;
 
+            }
+        }
+        if(enemyattack2 != null) {
+
+
+            if (enemyattack2.getPosition().y < 0) {
+                fight();
+                enemyattack2 = null;
+                lightning = null;
+                ButtonClicks = false;
             }
         }
         if(playingState == ATTACKING && lightning != null){
@@ -220,9 +281,12 @@ public class PlayState extends State {
 
 
         if(playingState == DEFENDING){
-            for(int i = 0; i < fireballs.size(); i++){
-                sb.draw(fireballs.get(i).getTexture(), fireballs.get(i).getPosition().x, fireballs.get(i).getPosition().y, 40, 40);
-
+            if(pattern == 3){
+                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y);
+            }else {
+                for(int i = 0; i < fireballs.size(); i++) {
+                    sb.draw(fireballs.get(i).getTexture(), fireballs.get(i).getPosition().x, fireballs.get(i).getPosition().y, 40, 40);
+                }
                 //System.out.println(fireballs.get(i).getPosition().y);
             }
 //            sb.draw(fireball1.getTexture(), fireball1.getPosition().x, fireball1.getPosition().y);
@@ -231,7 +295,8 @@ public class PlayState extends State {
         if(playingState == ATTACKING && lightning != null){
             sb.draw(lightning.getTexture(), lightning.getPosition().x, lightning.getPosition().y, 140, 400);
         }
-        sb.draw(attack1.getTexture(), attack1.getPosition().x, attack1.getPosition().y, 80, 80);
+        sb.draw(attack1.getTexture(), attack1.getPosition().x, attack1.getPosition().y, 120, 120);
+
 
         this.renderMessageOnSpriteBatch(sb);
         this.renderLifeTotal(sb);
@@ -262,7 +327,7 @@ public class PlayState extends State {
         background.dispose();
         player.dispose();
         charizard.dispose();
-
+        music.dispose();
 
         System.out.println("Play State Disposed");
     }
