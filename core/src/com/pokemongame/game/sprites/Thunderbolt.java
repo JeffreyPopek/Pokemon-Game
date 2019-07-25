@@ -24,14 +24,15 @@
                 return position;
             }
 
-            public Thunderbolt(float x, float y){
-                damage = 2000;
+            public Thunderbolt(float x, float y, int newDamage){
+                damage = newDamage;
                 position = new Vector2(x, y);
                 velocity = new Vector2(0, -100);
                 texture = new Texture("lightning_spritesheet.png");
                 currentAnimation = new Animation(new TextureRegion(texture),  4, 5, 2, 1.5f);
                 bounds = new Rectangle(position.x, position.y, 40, 40);
             }
+
 
             public void update(float dt) {
 

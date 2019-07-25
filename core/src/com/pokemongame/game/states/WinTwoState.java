@@ -30,7 +30,7 @@ public class WinTwoState extends State {
         if (Gdx.input.justTouched()) {
             if (Gdx.input.getX() > 262 && Gdx.input.getX() < 450
                     && Gdx.input.getY() < 695 && Gdx.input.getY() > 592) {
-                gsm.set(new PlayStateTwo(gsm));
+                gsm.set(new PlayStateThree(gsm));
             }
         }
 

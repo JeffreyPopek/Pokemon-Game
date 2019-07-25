@@ -66,6 +66,10 @@ public class Player {
         this.direction = PlayerDirection.NONE;
     }
 
+    public void setHealth(int newHealth){
+        health = newHealth;
+    }
+
     public void update(float dt){
         if (currentAnimation != null){
             currentAnimation.update(dt);

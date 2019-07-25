@@ -1,12 +1,16 @@
 package com.pokemongame.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 
-public class Blastoise {
+
+public class Venusaur {
+
     private int health;
     private Rectangle bounds;
     private Texture texture;
@@ -40,14 +44,14 @@ public class Blastoise {
         return health;
     }
 
-    public Blastoise(int x, int y) {
-        health = 3000;
+    public Venusaur(int x, int y) {
+        health = 10000;
         busy = false;
         position = new Vector2(x, y);
         collided = false;
         velocity = new Vector2(0, 0);
-        texture = new Texture("blastoise_spritesheet.png");
-        currentAnimation = new Animation(new TextureRegion(texture), 244, 5, 49, 2.0f);
+        texture = new Texture("venusaur_spritesheet.png");
+        currentAnimation = new Animation(new TextureRegion(texture), 167, 5, 34, 3.5f);
         bounds = new Rectangle(position.x, position.y, texture.getWidth() / 3, texture.getHeight());
     }
 
@@ -92,9 +96,9 @@ public class Blastoise {
     }
 
     public void attack() {
-        float cycleTime = 2.0f;
-        texture = new Texture("blastoise_spritesheet.png");
-        this.currentAnimation = new Animation(new TextureRegion(texture), 244, 5, 49, cycleTime);
+        float cycleTime = 0.7f;
+        texture = new Texture("venusaur_spritesheet.png");
+        this.currentAnimation = new Animation(new TextureRegion(texture), 167, 5, 34, cycleTime);
 
         this.positionBeforeAnimation = new Vector2(this.position.x, this.position.y);
 
@@ -106,8 +110,8 @@ public class Blastoise {
             public void run() {
                 position.x = positionBeforeAnimation.x;
                 position.y = positionBeforeAnimation.y;
-                texture = new Texture("blastoise_spritesheet.png");
-                currentAnimation = new Animation(new TextureRegion(texture), 244, 5, 49, 2.0f);
+                texture = new Texture("venusaur_spritesheet.png");
+                currentAnimation = new Animation(new TextureRegion(texture), 167, 5, 34, 3.2f);
                 busy = false;
             }
         }, cycleTime);
@@ -116,5 +120,3 @@ public class Blastoise {
     }
 
 }
-
-

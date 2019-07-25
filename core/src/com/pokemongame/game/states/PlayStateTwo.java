@@ -12,7 +12,7 @@ import com.pokemongame.game.sprites.Button;
 import com.pokemongame.game.sprites.Blastoise;
 import com.pokemongame.game.sprites.Electroball;
 import com.pokemongame.game.sprites.Waterball;
-import com.pokemongame.game.sprites.Fireblast;
+import com.pokemongame.game.sprites.Waterfall;
 import com.pokemongame.game.sprites.Paralyze;
 import com.pokemongame.game.sprites.Player;
 import com.pokemongame.game.sprites.Thunderbolt;
@@ -52,7 +52,7 @@ public class PlayStateTwo extends State {
     private boolean ButtonClicks;
     private Random number;
     private Music music;
-    private Fireblast enemyattack2;
+    private Waterfall enemyattack2;
     private int pattern;
     private Electroball electroball;
     private boolean skipturn;
@@ -76,6 +76,7 @@ public class PlayStateTwo extends State {
         font.getData().setScale(1.5f);
         number = new Random();
         skipturn = false;
+        player.setHealth(2000);
 
 
         loadIntroMessages();
@@ -103,7 +104,7 @@ public class PlayStateTwo extends State {
             playingState = DEFENDING;
             blastoise.attack();
             pattern = number.nextInt(5);
-            //pattern = 3;
+            //pattern = 4;
 
 //            fireball1 = new Fireball(blastoiseetPosition().x, blastoise.getPosition().y);
 
@@ -127,10 +128,11 @@ public class PlayStateTwo extends State {
 
 
             } else if (pattern == 3) {
-                enemyattack2 = new Fireblast(2, 250);
+                enemyattack2 = new Waterfall(-50, 250);
 
             }else if(pattern == 4){
-                enemyattack2 = new Fireblast(100, 250);
+                enemyattack2 = new Waterfall(100, 250);
+                System.out.println("pattern 4");
             }
 
 
@@ -187,7 +189,7 @@ public class PlayStateTwo extends State {
                         System.out.println("button clicked");
                         if(ButtonClicks == false) {
                             player.attack();
-                            lightning = new Thunderbolt(35, 120);
+                            lightning = new Thunderbolt(35, 120, 300);
                             blastoise.takeDamage(lightning.getDamage());
                             ButtonClicks = true;
                         }
@@ -337,7 +339,7 @@ public class PlayStateTwo extends State {
 
         if(playingState == DEFENDING){
             if(enemyattack2 != null){
-                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y);
+                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y, 150, 500);
             }else {
                 for(int i = 0; i < waterballs.size(); i++) {
                     sb.draw(waterballs.get(i).getTexture(), waterballs.get(i).getPosition().x, waterballs.get(i).getPosition().y, 40, 40);

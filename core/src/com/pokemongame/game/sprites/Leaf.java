@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Waterball {
+public class Leaf {
     private Animation currentAnimation;
     private Texture texture;
     private Vector2 position;
@@ -23,12 +23,12 @@ public class Waterball {
         return position;
     }
 
-    public Waterball(float x, float y){
-        damage = 10;
+    public Leaf(float x, float y){
+        damage = 20;
         position = new Vector2(x, y);
         velocity = new Vector2(0, -100);
-        texture = new Texture("waterball_spritesheet.png");
-        currentAnimation = new Animation(new TextureRegion(texture),  5, 1, 5, 0.5f);
+        texture = new Texture("leaf_attack.png");
+        currentAnimation = new Animation(new TextureRegion(texture),  4, 5, 1, 0.7f);
         bounds = new Rectangle(position.x, position.y, 40, 40);
     }
 
