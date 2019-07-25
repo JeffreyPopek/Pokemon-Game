@@ -5,7 +5,7 @@
     import com.badlogic.gdx.math.Rectangle;
     import com.badlogic.gdx.math.Vector2;
 
-    public class PlayerAttack {
+    public class Thunderbolt {
 
             private Animation currentAnimation;
             private Texture texture;
@@ -24,8 +24,8 @@
                 return position;
             }
 
-            public PlayerAttack(float x, float y){
-                damage = 200;
+            public Thunderbolt(float x, float y){
+                damage = 2000;
                 position = new Vector2(x, y);
                 velocity = new Vector2(0, -100);
                 texture = new Texture("lightning_spritesheet.png");

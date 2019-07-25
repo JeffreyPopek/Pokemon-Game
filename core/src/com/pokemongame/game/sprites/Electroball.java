@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class EnemyAttackTwo {
+public class Electroball {
     private Animation currentAnimation;
     private Texture texture;
     private Vector2 position;
@@ -23,13 +23,13 @@ public class EnemyAttackTwo {
         return position;
     }
 
-    public EnemyAttackTwo(float x, float y){
-        damage = 20;
+    public Electroball(float x, float y){
+        damage = 50;
         position = new Vector2(x, y);
-        velocity = new Vector2(0, -50);
-        texture = new Texture("fire_breath_attack.png");
-        currentAnimation = new Animation(new TextureRegion(texture),  36, 5, 8, 1.0f);
-        bounds = new Rectangle(position.x, position.y, texture.getWidth() /5, texture.getHeight()/12);
+        velocity = new Vector2(0, 220);
+        texture = new Texture("electroball_spritesheet.png");
+        currentAnimation = new Animation(new TextureRegion(texture),  36, 5, 8, 2f);
+        bounds = new Rectangle(position.x, position.y, 40, 40);
     }
 
     public void update(float dt) {
@@ -56,5 +56,9 @@ public class EnemyAttackTwo {
         return player.overlaps(bounds);
     }
 
+
+
+
 }
+
 

@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class WinState extends State {
+public class WinTwoState extends State {
     private Texture winscreen;
     private Texture backbutton;
     private Texture arrow;
-    public WinState(GameStateManager value) {
+    public WinTwoState(GameStateManager value) {
         super(value);
         backbutton = new Texture("menu_button.png");
         winscreen = new Texture("winscreen.png");

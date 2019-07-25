@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.pokemongame.game.pokemongame;
+import com.pokemongame.game.sprites.Blastoise;
 import com.pokemongame.game.sprites.Button;
-import com.pokemongame.game.sprites.Charizard;
+import com.pokemongame.game.sprites.Blastoise;
 import com.pokemongame.game.sprites.Electroball;
-import com.pokemongame.game.sprites.Fireball;
+import com.pokemongame.game.sprites.Waterball;
 import com.pokemongame.game.sprites.Fireblast;
 import com.pokemongame.game.sprites.Paralyze;
 import com.pokemongame.game.sprites.Player;
@@ -27,7 +28,7 @@ import static com.pokemongame.game.states.PlayingState.ATTACKING;
 import static com.pokemongame.game.states.PlayingState.DEFENDING;
 import static java.lang.Thread.sleep;
 
-public class PlayState extends State {
+public class PlayStateTwo extends State {
 
     private final String ENEMY = "ENEMY";
     private final String PLAYER = "PLAYER";
@@ -38,13 +39,13 @@ public class PlayState extends State {
     private PlayingState playingState;
     private Player player;
     private boolean isWaitingForUser;
-    private Charizard charizard;
+    private Blastoise blastoise;
     private BitmapFont font;
     private Texture background;
     private Texture ground;
     private Vector2 groundPosition1, groundPosition2;
-    private Fireball fireball1;
-    private List <Fireball> fireballs;
+    private Waterball waterball;
+    private List <Waterball> waterballs;
     private Button attack1;
     private Button attack2;
     private Thunderbolt lightning;
@@ -59,15 +60,15 @@ public class PlayState extends State {
     private Paralyze paralyzestatus;
 
 
-    public PlayState(GameStateManager gsm) {
+    public PlayStateTwo(GameStateManager gsm) {
         super(gsm);
         playingState = PlayingState.INTRO;
 
-        fireballs = new ArrayList<Fireball>();
+        waterballs = new ArrayList<Waterball>();
         paralyze = 6;
         player = new Player(80, 120);
-        charizard = new Charizard(80, 295);
-        background = new Texture("bg.png");
+        blastoise = new Blastoise(80, 295);
+        background = new Texture("bg2.png");
         attack1 = new Button(1, 25, "Thunderbolt_button.png");
         attack2 = new Button(100, 25, "electroball_button.png");
         ButtonClicks = false;
@@ -98,54 +99,54 @@ public class PlayState extends State {
 
     private void enemyFight(){
 
-            if (currentActor == ENEMY && !(charizard.isBusy() || player.isBusy())) {
-                playingState = DEFENDING;
-                charizard.attack();
-                pattern = number.nextInt(5);
-                //pattern = 3;
+        if (currentActor == ENEMY && !(blastoise.isBusy() || player.isBusy())) {
+            playingState = DEFENDING;
+            blastoise.attack();
+            pattern = number.nextInt(5);
+            //pattern = 3;
 
-//            fireball1 = new Fireball(charizard.getPosition().x, charizard.getPosition().y);
+//            fireball1 = new Fireball(blastoiseetPosition().x, blastoise.getPosition().y);
 
-                if (pattern == 0) {
-                    fireballs.add(new Fireball(20, charizard.getPosition().y));
-                    fireballs.add(new Fireball(60, charizard.getPosition().y));
-                    fireballs.add(new Fireball(100, charizard.getPosition().y));
-                    fireballs.add(new Fireball(200, charizard.getPosition().y));
+            if (pattern == 0) {
+                waterballs.add(new Waterball(20, blastoise.getPosition().y));
+                waterballs.add(new Waterball(60, blastoise.getPosition().y));
+                waterballs.add(new Waterball(100, blastoise.getPosition().y));
+                waterballs.add(new Waterball(200, blastoise.getPosition().y));
 
-                } else if (pattern == 1) {
-                    fireballs.add(new Fireball(200, charizard.getPosition().y));
-                    fireballs.add(new Fireball(100, charizard.getPosition().y));
-                    fireballs.add(new Fireball(150, charizard.getPosition().y));
-
-
-                } else if (pattern == 2) {
-                    fireballs.add(new Fireball(10, charizard.getPosition().y));
-                    fireballs.add(new Fireball(60, charizard.getPosition().y));
-                    fireballs.add(new Fireball(100, charizard.getPosition().y));
-                    fireballs.add(new Fireball(140, charizard.getPosition().y));
+            } else if (pattern == 1) {
+                waterballs.add(new Waterball(200, blastoise.getPosition().y));
+                waterballs.add(new Waterball(100, blastoise.getPosition().y));
+                waterballs.add(new Waterball(150, blastoise.getPosition().y));
 
 
-                } else if (pattern == 3) {
-                    enemyattack2 = new Fireblast(-10, 250);
-
-                }else if(pattern == 4){
-                    enemyattack2 = new Fireblast(100, 250);
-                }
-
+            } else if (pattern == 2) {
+                waterballs.add(new Waterball(10, blastoise.getPosition().y));
+                waterballs.add(new Waterball(60, blastoise.getPosition().y));
+                waterballs.add(new Waterball(100, blastoise.getPosition().y));
+                waterballs.add(new Waterball(140, blastoise.getPosition().y));
 
 
+            } else if (pattern == 3) {
+                enemyattack2 = new Fireblast(2, 250);
 
-                messages.add(new Message(ENEMY, "Opponent's turn"));
-                getNextMessage();
-
-                currentActor = PLAYER;
+            }else if(pattern == 4){
+                enemyattack2 = new Fireblast(100, 250);
             }
+
+
+
+
+            messages.add(new Message(ENEMY, "Opponent's turn"));
+            getNextMessage();
+
+            currentActor = PLAYER;
+        }
 
 
     }
 
     private void playerFight(){
-        if(currentActor == PLAYER && !(charizard.isBusy() || player.isBusy())) {
+        if(currentActor == PLAYER && !(blastoise.isBusy() || player.isBusy())) {
             playingState = ATTACKING;
             player.setPosition(80, 120);
             player.attack();
@@ -158,8 +159,8 @@ public class PlayState extends State {
     }
 
     private void fight(){
-            enemyFight();
-            playerFight();
+        enemyFight();
+        playerFight();
     }
 
     private void resolveWinner(){
@@ -187,7 +188,7 @@ public class PlayState extends State {
                         if(ButtonClicks == false) {
                             player.attack();
                             lightning = new Thunderbolt(35, 120);
-                            charizard.takeDamage(lightning.getDamage());
+                            blastoise.takeDamage(lightning.getDamage());
                             ButtonClicks = true;
                         }
 
@@ -196,8 +197,8 @@ public class PlayState extends State {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
                             player.attack();
-                             electroball = new Electroball(85, 150);
-                            charizard.takeDamage(electroball.getDamage());
+                            electroball = new Electroball(85, 150);
+                            blastoise.takeDamage(electroball.getDamage());
                             ButtonClicks = true;
                             paralyze = number.nextInt(5);
                             paralyzestatus = new Paralyze(100, 260);
@@ -253,10 +254,10 @@ public class PlayState extends State {
             gsm.set(new GameOverState(gsm));
         }
 
-        if(charizard.getHealth() <= 0){
-            gsm.set(new WinState(gsm));
+        if(blastoise.getHealth() <= 0){
+            gsm.set(new WinTwoState(gsm));
         }
-        charizard.update(dt);
+        blastoise.update(dt);
         if(playingState == DEFENDING){
             if(enemyattack2 != null){
                 enemyattack2.update(dt);
@@ -264,18 +265,18 @@ public class PlayState extends State {
                     player.takeDamage(enemyattack2.getDamage());
                 }
             }else {
-                for (int i = 0; i < fireballs.size(); i++) {
-                    fireballs.get(i).update(dt);
-                    if (fireballs.get(i).collides(player.getBounds())) {
-                        player.takeDamage(fireballs.get(i).getDamage());
+                for (int i = 0; i < waterballs.size(); i++) {
+                    waterballs.get(i).update(dt);
+                    if (waterballs.get(i).collides(player.getBounds())) {
+                        player.takeDamage(waterballs.get(i).getDamage());
                     }
                 }
             }
         }
-        if(fireballs.size() > 0) {
-            if (fireballs.get(0).getPosition().y < 0) {
+        if(waterballs.size() > 0) {
+            if (waterballs.get(0).getPosition().y < 0) {
                 fight();
-                fireballs.clear();
+                waterballs.clear();
                 ButtonClicks = false;
                 lightning = null;
                 electroball = null;
@@ -331,15 +332,15 @@ public class PlayState extends State {
         // Start Drawing
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
-        sb.draw(charizard.getTexture(), charizard.getPosition().x, charizard.getPosition().y);
+        sb.draw(blastoise.getTexture(), blastoise.getPosition().x, blastoise.getPosition().y);
 
 
         if(playingState == DEFENDING){
             if(enemyattack2 != null){
                 sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y);
             }else {
-                for(int i = 0; i < fireballs.size(); i++) {
-                    sb.draw(fireballs.get(i).getTexture(), fireballs.get(i).getPosition().x, fireballs.get(i).getPosition().y, 40, 40);
+                for(int i = 0; i < waterballs.size(); i++) {
+                    sb.draw(waterballs.get(i).getTexture(), waterballs.get(i).getPosition().x, waterballs.get(i).getPosition().y, 40, 40);
                 }
                 //System.out.println(fireballs.get(i).getPosition().y);
             }
@@ -354,7 +355,7 @@ public class PlayState extends State {
             sb.draw(electroball.getTexture(), electroball.getPosition().x, electroball.getPosition().y, 40, 40);
 
         }
-            sb.draw(attack2.getTexture(), attack2.getPosition().x, attack2.getPosition().y, 120, 120);
+        sb.draw(attack2.getTexture(), attack2.getPosition().x, attack2.getPosition().y, 120, 120);
 
         if(paralyzestatus != null){
             sb.draw(paralyzestatus.getTexture(), 100, 260);
@@ -383,13 +384,13 @@ public class PlayState extends State {
         font.setColor(0,255,0,1);
         font.draw(sb, String.valueOf(player.getHealth()), 2, 20);
         font.setColor(255,0,0,1);
-        font.draw(sb, String.valueOf(charizard.getHealth()), 2, 395);
+        font.draw(sb, String.valueOf(blastoise.getHealth()), 2, 395);
     }
     @Override
     public void dispose() {
         background.dispose();
         player.dispose();
-        charizard.dispose();
+        blastoise.dispose();
         music.dispose();
 
         System.out.println("Play State Disposed");

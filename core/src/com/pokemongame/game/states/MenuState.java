@@ -37,9 +37,13 @@ public class MenuState extends State {
 
 
         }
-//        if(Gdx.input.getX() > 170 && Gdx.input.getX() < 336
-//                && Gdx.input.getY() < 381 && Gdx.input.getY() > 293){
-//            gsm.set(new PlayState(gsm));
+            if(Gdx.input.justTouched()) {
+
+            if(Gdx.input.getX() > 171 && Gdx.input.getX() < 330
+                    && Gdx.input.getY() < 736 && Gdx.input.getY() > 628){
+                gsm.set(new LevelsState(gsm));
+            }
+            }
 
     }
 

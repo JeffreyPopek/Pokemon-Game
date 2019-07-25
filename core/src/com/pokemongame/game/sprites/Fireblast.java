@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class EnemyAttack {
+public class Fireblast {
     private Animation currentAnimation;
     private Texture texture;
     private Vector2 position;
@@ -23,13 +23,13 @@ public class EnemyAttack {
         return position;
     }
 
-    public EnemyAttack(float x, float y){
-        damage = 5;
+    public Fireblast(float x, float y){
+        damage = 20;
         position = new Vector2(x, y);
         velocity = new Vector2(0, -100);
-        texture = new Texture("fireball_sheet.png");
-        currentAnimation = new Animation(new TextureRegion(texture),  10, 5, 2, 2.0f);
-        bounds = new Rectangle(position.x, position.y, 40, 40);
+        texture = new Texture("fire_breath_attack.png");
+        currentAnimation = new Animation(new TextureRegion(texture),  36, 5, 8, 1.0f);
+        bounds = new Rectangle(position.x, position.y, texture.getWidth() /5, texture.getHeight()/12);
     }
 
     public void update(float dt) {
