@@ -14,15 +14,17 @@ public class LevelsState extends State {
     private Texture charizard;
     private Texture blastoise;
     private Texture venusaur;
+    private Texture mewtwo;
 
 
     public LevelsState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("level_state.png");
+        background = new Texture("levels_state.png");
         backButton = new Texture("menu_button.png");
         charizard = new Texture("charizard_front.png");
         blastoise = new Texture("blastoise_front.png");
         venusaur = new Texture("venusaur_front.png");
+        mewtwo = new Texture("mewtwo_front.png");
     }
 
     @Override
@@ -52,14 +54,18 @@ public class LevelsState extends State {
         }
 
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 139 && Gdx.input.getX() < 299
-                    && Gdx.input.getY() < 595 && Gdx.input.getY() > 475) {
+            if (Gdx.input.getX() > 3 && Gdx.input.getX() < 164
+                    && Gdx.input.getY() < 601 && Gdx.input.getY() > 472) {
                 gsm.set(new PlayStateThree(gsm));
             }
         }
-//        if(Gdx.input.getX() > 170 && Gdx.input.getX() < 336
-//                && Gdx.input.getY() < 381 && Gdx.input.getY() > 293){
-//            gsm.set(new PlayState(gsm));
+
+        if (Gdx.input.justTouched()) {
+            if (Gdx.input.getX() > 289 && Gdx.input.getX() < 456
+                    && Gdx.input.getY() < 603 && Gdx.input.getY() > 480) {
+                gsm.set(new PlayStateFour(gsm));
+            }
+        }
 
     }
 
@@ -81,7 +87,9 @@ public class LevelsState extends State {
 
         sb.draw(blastoise, 140, 200);
 
-        sb.draw(venusaur, 65, 75);
+        sb.draw(venusaur, -5, 75);
+
+        sb.draw(mewtwo, 140, 75);
 
         sb.end();
     }

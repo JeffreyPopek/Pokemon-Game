@@ -1,6 +1,7 @@
 package com.pokemongame.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pokemongame.game.pokemongame;
@@ -10,6 +11,7 @@ import javax.xml.soap.Text;
 public class MenuState extends State {
 
     private Texture background;
+    private Music music;
     private Texture playButton;
  //   private Texture helpButton;
     private Texture levelsButton;
@@ -23,6 +25,11 @@ public class MenuState extends State {
         levelsButton = new Texture("levels_button.png");
         title = new Texture("title.png");
 
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
     }
 
     @Override
@@ -74,6 +81,7 @@ public class MenuState extends State {
     public void dispose() {
         background.dispose();
         playButton.dispose();
+        music.dispose();
         System.out.println("Menu State Disposed");
     }
 }

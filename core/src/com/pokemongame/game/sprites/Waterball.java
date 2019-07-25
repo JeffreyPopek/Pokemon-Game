@@ -26,7 +26,7 @@ public class Waterball {
     public Waterball(float x, float y){
         damage = 10;
         position = new Vector2(x, y);
-        velocity = new Vector2(0, -100);
+        velocity = new Vector2(0, -120);
         texture = new Texture("waterball_spritesheet.png");
         currentAnimation = new Animation(new TextureRegion(texture),  5, 1, 5, 0.5f);
         bounds = new Rectangle(position.x, position.y, 40, 40);
