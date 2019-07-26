@@ -142,11 +142,7 @@ public class PlayStateTwo extends State {
             getNextMessage();
 
             currentActor = PLAYER;
-        }else{
-            System.out.println("Going to player");
         }
-
-
     }
 
     private void playerFight(){
@@ -159,14 +155,6 @@ public class PlayStateTwo extends State {
             getNextMessage();
 
             currentActor = ENEMY;
-        }else{
-            if(currentActor == PLAYER){
-                System.out.println("PLAYER");
-            }else{
-                System.out.println("ENEMY");
-            }
-
-            System.out.println("Going to enemy");
         }
     }
 
@@ -293,9 +281,6 @@ public class PlayStateTwo extends State {
                 ButtonClicks = false;
                 lightning = null;
                 electroball = null;
-                while(!(player.isBusy()||blastoise.isBusy())){
-
-                }
                 fight();
 
 
@@ -311,11 +296,7 @@ public class PlayStateTwo extends State {
                 lightning = null;
                 ButtonClicks = false;
                 electroball = null;
-                while(!(player.isBusy()||blastoise.isBusy())){
-
-                }
                 fight();
-                System.out.println("Made it");
 
             }
         }
