@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Blastoise;
@@ -68,7 +69,7 @@ public class PlayStateTwo extends State {
         player = new Player(80, 120);
         blastoise = new Blastoise(80, 295);
         background = new Texture("bg2.png");
-        attack1 = new Button(1, 25, "Thunderbolt_button.png");
+        attack1 = new Button(1, 25, "thunderbolt_button.png");
         attack2 = new Button(100, 25, "electroball_button.png");
         ButtonClicks = false;
         font = new BitmapFont();
@@ -141,6 +142,8 @@ public class PlayStateTwo extends State {
             getNextMessage();
 
             currentActor = PLAYER;
+        }else{
+            System.out.println("Going to player");
         }
 
 
@@ -156,6 +159,14 @@ public class PlayStateTwo extends State {
             getNextMessage();
 
             currentActor = ENEMY;
+        }else{
+            if(currentActor == PLAYER){
+                System.out.println("PLAYER");
+            }else{
+                System.out.println("ENEMY");
+            }
+
+            System.out.println("Going to enemy");
         }
     }
 
@@ -170,7 +181,8 @@ public class PlayStateTwo extends State {
 
     @Override
     public void handleInput() {
-
+        mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+        cam.unproject(mouse);
         if(Gdx.input.justTouched()){
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
@@ -184,17 +196,17 @@ public class PlayStateTwo extends State {
                 case ATTACKING:
 
                     isWaitingForUser = false;
-                    if(Gdx.input.getX() < 157 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645){
+                    if(mouse.x < 157 && mouse.x > 80 && mouse.y > 577 && mouse.y < 645){
                         System.out.println("button clicked");
                         if(ButtonClicks == false) {
                             player.attack();
-                            lightning = new Thunderbolt(35, 120, 300);
+                            lightning = new Thunderbolt(35, 120, 200);
                             blastoise.takeDamage(lightning.getDamage());
                             ButtonClicks = true;
                         }
 
                     }
-                    if(Gdx.input.getX() < 355 && Gdx.input.getX() > attack2.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645) {
+                    if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
                             player.attack();
@@ -230,7 +242,7 @@ public class PlayStateTwo extends State {
 
     private PlayerDirection getMoveDirection (){
         PlayerDirection direction = PlayerDirection.RIGHT;
-        if (Gdx.input.getX() < pokemongame.WIDTH / 2){
+        if (mouse.x < pokemongame.WIDTH / 2){
             direction = PlayerDirection.LEFT;
         }
         return direction;
@@ -276,11 +288,16 @@ public class PlayStateTwo extends State {
         }
         if(waterballs.size() > 0) {
             if (waterballs.get(0).getPosition().y < 0) {
-                fight();
+                System.out.println(waterballs.get(0).getPosition().y);
                 waterballs.clear();
                 ButtonClicks = false;
                 lightning = null;
                 electroball = null;
+                while(!(player.isBusy()||blastoise.isBusy())){
+
+                }
+                fight();
+
 
 
             }
@@ -289,15 +306,22 @@ public class PlayStateTwo extends State {
 
 
             if (enemyattack2.getPosition().y < 0) {
-                fight();
+                System.out.println(enemyattack2.getPosition().y);
                 enemyattack2 = null;
                 lightning = null;
                 ButtonClicks = false;
                 electroball = null;
+                while(!(player.isBusy()||blastoise.isBusy())){
+
+                }
+                fight();
+                System.out.println("Made it");
+
             }
         }
         if(playingState == ATTACKING && lightning != null){
             lightning.update(dt);
+
             fight();
             paralyzestatus = null;
             System.out.println("LIGHTNING");

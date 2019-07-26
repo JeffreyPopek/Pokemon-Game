@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Button;
@@ -168,8 +169,10 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
-
+        mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+        cam.unproject(mouse);
         if(Gdx.input.justTouched()){
+
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
                 case INTRO:
@@ -182,7 +185,7 @@ public class PlayState extends State {
                 case ATTACKING:
 
                     isWaitingForUser = false;
-                    if(Gdx.input.getX() < 157 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645){
+                    if(mouse.x < 157 && mouse.x > 80 && mouse.y > 577 && mouse.y < 645){
                         System.out.println("button clicked");
                         if(ButtonClicks == false) {
                             player.attack();
@@ -192,7 +195,7 @@ public class PlayState extends State {
                         }
 
                     }
-                    if(Gdx.input.getX() < 355 && Gdx.input.getX() > attack2.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645) {
+                    if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
                             player.attack();
@@ -228,7 +231,7 @@ public class PlayState extends State {
 
     private PlayerDirection getMoveDirection (){
         PlayerDirection direction = PlayerDirection.RIGHT;
-        if (Gdx.input.getX() < pokemongame.WIDTH / 2){
+        if (mouse.x < pokemongame.WIDTH / 2){
             direction = PlayerDirection.LEFT;
         }
         return direction;
@@ -275,16 +278,17 @@ public class PlayState extends State {
         if(fireballs.size() > 0) {
             if (fireballs.get(0).getPosition().y < 0) {
                 fight();
+                System.out.println(fireballs.get(0).getPosition().y);
                 fireballs.clear();
                 ButtonClicks = false;
                 lightning = null;
                 electroball = null;
 
 
+
             }
         }
         if(enemyattack2 != null) {
-
 
             if (enemyattack2.getPosition().y < 0) {
                 fight();
@@ -341,7 +345,7 @@ public class PlayState extends State {
                 for(int i = 0; i < fireballs.size(); i++) {
                     sb.draw(fireballs.get(i).getTexture(), fireballs.get(i).getPosition().x, fireballs.get(i).getPosition().y, 40, 40);
                 }
-                //System.out.println(fireballs.get(i).getPosition().y);
+
             }
 //            sb.draw(fireball1.getTexture(), fireball1.getPosition().x, fireball1.getPosition().y);
             //System.out.println("sdssd");

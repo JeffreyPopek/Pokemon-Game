@@ -3,6 +3,7 @@ package com.pokemongame.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class HelpState extends State {
     private Texture attackscreen;
@@ -16,6 +17,8 @@ public class HelpState extends State {
 
     @Override
     public void handleInput() {
+        mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+        cam.unproject(mouse);
         if(Gdx.input.justTouched()) {
             System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
         }

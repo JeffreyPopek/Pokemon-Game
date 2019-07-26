@@ -17,19 +17,21 @@ public class WinState extends State {
 
     @Override
     public void handleInput() {
+        mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+        cam.unproject(mouse);
         if(Gdx.input.justTouched()) {
             System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
         }
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 41 && Gdx.input.getX() < 231
-                    && Gdx.input.getY() < 705 && Gdx.input.getY() > 591) {
+            if (mouse.x > 41 && mouse.x < 231
+                    && mouse.y < 705 && mouse.y > 591) {
                 gsm.set(new MenuState(gsm));
             }
         }
 
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 262 && Gdx.input.getX() < 450
-                    && Gdx.input.getY() < 695 && Gdx.input.getY() > 592) {
+            if (mouse.x > 262 && mouse.x < 450
+                    && mouse.y < 695 && mouse.y > 592) {
                 gsm.set(new PlayStateTwo(gsm));
             }
         }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.pokemongame.game.pokemongame;
 
 import javax.xml.soap.Text;
@@ -25,7 +26,6 @@ public class MenuState extends State {
         levelsButton = new Texture("levels_button.png");
         title = new Texture("title.png");
 
-
         music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         music.setLooping(true);
         music.setVolume(0.1f);
@@ -34,9 +34,12 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
+
         if (Gdx.input.justTouched()){
-            if(Gdx.input.getX() > 170 && Gdx.input.getX() < 336
-                && Gdx.input.getY() < 381 && Gdx.input.getY() > 293){
+            mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+            cam.unproject(mouse);
+            if(mouse.x > 170 && mouse.x < 336
+                && mouse.y < 381 && mouse.y > 293){
                 gsm.set(new PlayState(gsm));
             }
             System.out.println("mouseY "+ Gdx.input.getY());
@@ -46,15 +49,15 @@ public class MenuState extends State {
         }
             if(Gdx.input.justTouched()) {
 
-            if(Gdx.input.getX() > 171 && Gdx.input.getX() < 330
-                    && Gdx.input.getY() < 736 && Gdx.input.getY() > 628){
+            if(mouse.x > 171 && mouse.x < 330
+                    && mouse.y < 736 && mouse.y > 628){
                 gsm.set(new LevelsState(gsm));
             }
             }
 
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 10 && Gdx.input.getX() < 98
-                    && Gdx.input.getY() < 734 && Gdx.input.getY() > 651) {
+            if (mouse.x > 10 && mouse.x < 98
+                    && mouse.y < 734 && mouse.y > 651) {
                 gsm.set(new HelpState(gsm));
             }
             //help button

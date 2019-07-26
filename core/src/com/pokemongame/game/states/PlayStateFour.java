@@ -77,7 +77,6 @@ public class PlayStateFour extends State {
         number = new Random();
         skipturn = false;
 
-
         loadIntroMessages();
         music = Gdx.audio.newMusic(Gdx.files.internal("playstate_music.mp3"));
         music.setLooping(true);
@@ -169,7 +168,8 @@ public class PlayStateFour extends State {
 
     @Override
     public void handleInput() {
-
+        mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+        cam.unproject(mouse);
         if(Gdx.input.justTouched()){
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
@@ -183,7 +183,7 @@ public class PlayStateFour extends State {
                 case ATTACKING:
 
                     isWaitingForUser = false;
-                    if(Gdx.input.getX() < 157 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645){
+                    if(mouse.x < 157 && mouse.x > 80 && mouse.y > 577 && mouse.y < 645){
                         System.out.println("button clicked");
                         if(ButtonClicks == false) {
                             player.attack();
@@ -193,7 +193,7 @@ public class PlayStateFour extends State {
                         }
 
                     }
-                    if(Gdx.input.getX() < 355 && Gdx.input.getX() > attack2.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645) {
+                    if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
                             player.attack();
@@ -229,7 +229,7 @@ public class PlayStateFour extends State {
 
     private PlayerDirection getMoveDirection (){
         PlayerDirection direction = PlayerDirection.RIGHT;
-        if (Gdx.input.getX() < pokemongame.WIDTH / 2){
+        if (mouse.x < pokemongame.WIDTH / 2){
             direction = PlayerDirection.LEFT;
         }
         return direction;

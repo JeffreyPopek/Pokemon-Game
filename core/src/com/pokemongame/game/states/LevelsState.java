@@ -3,6 +3,7 @@ package com.pokemongame.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.pokemongame.game.pokemongame;
 
 import javax.xml.soap.Text;
@@ -30,8 +31,10 @@ public class LevelsState extends State {
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()){
-            if(Gdx.input.getX() > 41 && Gdx.input.getX() < 231
-                    && Gdx.input.getY() < 730 && Gdx.input.getY() > 616){
+            mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+            cam.unproject(mouse);
+            if(mouse.x > 41 && mouse.x < 231
+                    && mouse.y < 730 && mouse.y > 616){
                 gsm.set(new MenuState(gsm));
             }
             System.out.println("mouseY "+ Gdx.input.getY());
@@ -40,29 +43,29 @@ public class LevelsState extends State {
 
         }
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 7 && Gdx.input.getX() < 154
-                    && Gdx.input.getY() < 366 && Gdx.input.getY() > 243) {
+            if (mouse.x > 7 && mouse.x < 154
+                    && mouse.y < 366 && mouse.y > 243) {
                 gsm.set(new PlayState(gsm));
             }
         }
 
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 295 && Gdx.input.getX() < 438
-                    && Gdx.input.getY() < 343 && Gdx.input.getY() > 248) {
+            if (mouse.x > 295 && mouse.x < 438
+                    && mouse.y < 343 && mouse.y > 248) {
                 gsm.set(new PlayStateTwo(gsm));
             }
         }
 
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 3 && Gdx.input.getX() < 164
-                    && Gdx.input.getY() < 601 && Gdx.input.getY() > 472) {
+            if (mouse.x > 3 && mouse.x < 164
+                    && mouse.y < 601 && mouse.y > 472) {
                 gsm.set(new PlayStateThree(gsm));
             }
         }
 
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() > 289 && Gdx.input.getX() < 456
-                    && Gdx.input.getY() < 603 && Gdx.input.getY() > 480) {
+            if (mouse.x > 289 && mouse.x < 456
+                    && mouse.y < 603 && mouse.y > 480) {
                 gsm.set(new PlayStateFour(gsm));
             }
         }

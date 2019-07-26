@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Button;
@@ -76,7 +77,6 @@ public class PlayStateThree extends State {
         number = new Random();
         skipturn = false;
         player.setHealth(3000);
-
 
         loadIntroMessages();
         music = Gdx.audio.newMusic(Gdx.files.internal("playstate_music.mp3"));
@@ -176,7 +176,8 @@ public class PlayStateThree extends State {
 
     @Override
     public void handleInput() {
-
+        mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
+        cam.unproject(mouse);
         if(Gdx.input.justTouched()){
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
@@ -190,17 +191,17 @@ public class PlayStateThree extends State {
                 case ATTACKING:
 
                     isWaitingForUser = false;
-                    if(Gdx.input.getX() < 157 && Gdx.input.getX() > attack1.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645){
+                    if(mouse.x < 157 && mouse.x > 80 && mouse.y > 577 && mouse.y < 645){
                         System.out.println("button clicked");
                         if(ButtonClicks == false) {
                             player.attack();
-                            lightning = new Thunderbolt(35, 120, 400);
+                            lightning = new Thunderbolt(35, 120, 200);
                             venusaur.takeDamage(lightning.getDamage());
                             ButtonClicks = true;
                         }
 
                     }
-                    if(Gdx.input.getX() < 355 && Gdx.input.getX() > attack2.getPosition().x && Gdx.input.getY() > 577 && Gdx.input.getY() < 645) {
+                    if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
                             player.attack();
@@ -236,7 +237,7 @@ public class PlayStateThree extends State {
 
     private PlayerDirection getMoveDirection (){
         PlayerDirection direction = PlayerDirection.RIGHT;
-        if (Gdx.input.getX() < pokemongame.WIDTH / 2){
+        if (mouse.x < pokemongame.WIDTH / 2){
             direction = PlayerDirection.LEFT;
         }
         return direction;
