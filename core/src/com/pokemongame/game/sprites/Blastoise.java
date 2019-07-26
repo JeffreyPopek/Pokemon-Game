@@ -92,7 +92,7 @@ public class Blastoise {
     }
 
     public void attack() {
-        float cycleTime = 2.0f;
+        float cycleTime = 0.7f;
         texture = new Texture("blastoise_spritesheet.png");
         this.currentAnimation = new Animation(new TextureRegion(texture), 244, 5, 49, cycleTime);
 
