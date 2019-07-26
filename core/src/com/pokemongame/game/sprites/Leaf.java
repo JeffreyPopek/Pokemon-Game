@@ -26,7 +26,7 @@ public class Leaf {
     public Leaf(float x, float y){
         damage = 20;
         position = new Vector2(x, y);
-        velocity = new Vector2(0, -100);
+        velocity = new Vector2(0, -140);
         texture = new Texture("leaf_attack.png");
         currentAnimation = new Animation(new TextureRegion(texture),  4, 5, 1, 0.7f);
         bounds = new Rectangle(position.x, position.y, 40, 40);

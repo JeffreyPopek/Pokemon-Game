@@ -102,8 +102,8 @@ public class PlayStateThree extends State {
         if (currentActor == ENEMY && !(venusaur.isBusy() || player.isBusy())) {
             playingState = DEFENDING;
             venusaur.attack();
-            //pattern = number.nextInt(4);
-            pattern = 3;
+            pattern = number.nextInt(4);
+            //pattern = 3;
 
 //            leaves = new leaves(charizard.getPosition().x, charizard.getPosition().y);
 
@@ -128,17 +128,17 @@ public class PlayStateThree extends State {
 
 
             } else if (pattern == 3) {
-                leaves.add(new Leaf(20, venusaur.getPosition().y));
-                leaves.add(new Leaf(60, venusaur.getPosition().y));
+                leaves.add(new Leaf(25, venusaur.getPosition().y));
                 leaves.add(new Leaf(100, venusaur.getPosition().y));
-                leaves.add(new Leaf(50, venusaur.getPosition().y));
-                leaves.add(new Leaf(20, venusaur.getPosition().y+40));
-                leaves.add(new Leaf(80, venusaur.getPosition().y+40));
-                leaves.add(new Leaf(200, venusaur.getPosition().y+40));
-                leaves.add(new Leaf(70, venusaur.getPosition().y+40));
-                leaves.add(new Leaf(40, venusaur.getPosition().y+100));
-                leaves.add(new Leaf(45, venusaur.getPosition().y+100));
-                leaves.add(new Leaf(170, venusaur.getPosition().y+100));
+                leaves.add(new Leaf(400, venusaur.getPosition().y));
+                leaves.add(new Leaf(300, venusaur.getPosition().y+40));
+                leaves.add(new Leaf(100, venusaur.getPosition().y+40));
+                leaves.add(new Leaf(10, venusaur.getPosition().y+40));
+                leaves.add(new Leaf(200, venusaur.getPosition().y+100));
+                leaves.add(new Leaf(400, venusaur.getPosition().y+100));
+                leaves.add(new Leaf(50, venusaur.getPosition().y+100));
+
+//                leaves.add(new Leaf(, venusaur.getPosition().y+100));
             }
 
 

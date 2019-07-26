@@ -126,10 +126,10 @@ public class PlayState extends State {
 
 
                 } else if (pattern == 3) {
-                    enemyattack2 = new Fireblast(-10, 250);
+                    enemyattack2 = new Fireblast(-10, 260);
 
                 }else if(pattern == 4){
-                    enemyattack2 = new Fireblast(100, 250);
+                    enemyattack2 = new Fireblast(100, 260);
                 }
 
 

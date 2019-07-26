@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
 import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Blastoise;
 import com.pokemongame.game.sprites.Button;
-import com.pokemongame.game.sprites.Blastoise;
 import com.pokemongame.game.sprites.Electroball;
 import com.pokemongame.game.sprites.Waterball;
 import com.pokemongame.game.sprites.Waterfall;
@@ -257,7 +256,7 @@ public class PlayStateTwo extends State {
         }
 
         if(blastoise.getHealth() <= 0){
-            gsm.set(new WinTwoState(gsm));
+            gsm.set(new WinStateTwo(gsm));
         }
         blastoise.update(dt);
         if(playingState == DEFENDING){
@@ -339,7 +338,7 @@ public class PlayStateTwo extends State {
 
         if(playingState == DEFENDING){
             if(enemyattack2 != null){
-                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y, 150, 500);
+                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y, 180, 500);
             }else {
                 for(int i = 0; i < waterballs.size(); i++) {
                     sb.draw(waterballs.get(i).getTexture(), waterballs.get(i).getPosition().x, waterballs.get(i).getPosition().y, 40, 40);
