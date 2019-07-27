@@ -58,6 +58,8 @@ public class PlayStateTwo extends State {
     private boolean skipturn;
     private int paralyze;
     private Paralyze paralyzestatus;
+    private Texture returnmenu;
+
 
 
     public PlayStateTwo(GameStateManager gsm) {
@@ -77,6 +79,8 @@ public class PlayStateTwo extends State {
         number = new Random();
         skipturn = false;
         player.setHealth(2000);
+        returnmenu = new Texture("return_menu_button.png");
+
 
 
         loadIntroMessages();
@@ -171,6 +175,12 @@ public class PlayStateTwo extends State {
     public void handleInput() {
         mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
         cam.unproject(mouse);
+        if (Gdx.input.justTouched()) {
+            if (mouse.x > 2 && mouse.x < 133
+                    && mouse.y < 132 && mouse.y > 82) {
+                gsm.set(new MenuState(gsm));
+            }
+        }
         if(Gdx.input.justTouched()){
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
@@ -193,7 +203,10 @@ public class PlayStateTwo extends State {
                             ButtonClicks = true;
                         }
 
+
+
                     }
+
                     if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
@@ -339,6 +352,8 @@ public class PlayStateTwo extends State {
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
         sb.draw(blastoise.getTexture(), blastoise.getPosition().x, blastoise.getPosition().y);
+        sb.draw(returnmenu, 0, 310, 70, 70);
+
 
 
         if(playingState == DEFENDING){

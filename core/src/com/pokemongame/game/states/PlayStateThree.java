@@ -58,6 +58,8 @@ public class PlayStateThree extends State {
     private boolean skipturn;
     private int paralyze;
     private Paralyze paralyzestatus;
+    private Texture returnmenu;
+
 
 
     public PlayStateThree(GameStateManager gsm) {
@@ -77,6 +79,8 @@ public class PlayStateThree extends State {
         number = new Random();
         skipturn = false;
         player.setHealth(3000);
+        returnmenu = new Texture("return_menu_button.png");
+
 
         loadIntroMessages();
         music = Gdx.audio.newMusic(Gdx.files.internal("playstate_music.mp3"));
@@ -178,6 +182,12 @@ public class PlayStateThree extends State {
     public void handleInput() {
         mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
         cam.unproject(mouse);
+        if (Gdx.input.justTouched()) {
+            if (mouse.x > 2 && mouse.x < 133
+                    && mouse.y < 132 && mouse.y > 82) {
+                gsm.set(new MenuState(gsm));
+            }
+        }
         if(Gdx.input.justTouched()){
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
@@ -200,7 +210,11 @@ public class PlayStateThree extends State {
                             ButtonClicks = true;
                         }
 
+
                     }
+
+
+
                     if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
@@ -338,9 +352,12 @@ public class PlayStateThree extends State {
 
         sb.begin();
         // Start Drawing
+        sb.draw(returnmenu, 0, 310, 70, 70);
+
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
         sb.draw(venusaur.getTexture(), venusaur.getPosition().x, venusaur.getPosition().y);
+        sb.draw(returnmenu, 0, 310, 70, 70);
 
 
         if(playingState == DEFENDING){

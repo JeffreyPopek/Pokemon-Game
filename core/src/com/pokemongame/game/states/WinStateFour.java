@@ -3,16 +3,16 @@ package com.pokemongame.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
-public class HelpState extends State {
-    private Texture attackscreen;
+public class WinStateFour extends State {
+    private Texture winscreen;
     private Texture backbutton;
-
-    public HelpState(GameStateManager value) {
+    private Texture arrow;
+    public WinStateFour(GameStateManager value) {
         super(value);
         backbutton = new Texture("menu_button.png");
-        attackscreen = new Texture("Attack_State.png");
+        winscreen = new Texture("winscreen.png");
+        arrow = new Texture("right_arrow.png");
     }
 
     @Override
@@ -23,9 +23,16 @@ public class HelpState extends State {
             System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
         }
         if (Gdx.input.justTouched()) {
-            if (mouse.x > 21 && mouse.x < 158
-                    && mouse.y < 735 && mouse.y > 654) {
+            if (mouse.x > 41 && mouse.x < 231
+                    && mouse.y < 705 && mouse.y > 591) {
                 gsm.set(new MenuState(gsm));
+            }
+        }
+
+        if (Gdx.input.justTouched()) {
+            if (mouse.x > 262 && mouse.x < 450
+                    && mouse.y < 695 && mouse.y > 592) {
+                gsm.set(new PlayStateTwo(gsm));
             }
         }
 
@@ -36,8 +43,9 @@ public class HelpState extends State {
 
         sb.begin();
 
-        sb.draw(attackscreen, 0, 0, 240, 400);
-        sb.draw(backbutton, 10, 10, 70, 70);
+        sb.draw(winscreen, 0, 0, 240, 400);
+        sb.draw(backbutton, 20, 20);
+        sb.draw(arrow, 130, 20);
 
         sb.end();
     }

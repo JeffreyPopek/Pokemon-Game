@@ -10,8 +10,9 @@ import com.pokemongame.game.pokemongame;
 import com.pokemongame.game.sprites.Button;
 import com.pokemongame.game.sprites.Charizard;
 import com.pokemongame.game.sprites.Electroball;
-import com.pokemongame.game.sprites.Fireball;
-import com.pokemongame.game.sprites.Fireblast;
+import com.pokemongame.game.sprites.Leaf;
+import com.pokemongame.game.sprites.Shadowball;
+import com.pokemongame.game.sprites.Beam;
 import com.pokemongame.game.sprites.Mewtwo;
 import com.pokemongame.game.sprites.Paralyze;
 import com.pokemongame.game.sprites.Player;
@@ -44,27 +45,29 @@ public class PlayStateFour extends State {
     private Texture background;
     private Texture ground;
     private Vector2 groundPosition1, groundPosition2;
-    private Fireball fireball1;
-    private List <Fireball> fireballs;
+    private Shadowball shadowball;
+    private List <Shadowball> shadowballs;
     private Button attack1;
     private Button attack2;
     private Thunderbolt lightning;
     private boolean ButtonClicks;
     private Random number;
     private Music music;
-    private Fireblast enemyattack2;
+    private Beam enemyattack2;
     private int pattern;
     private Electroball electroball;
     private boolean skipturn;
     private int paralyze;
     private Paralyze paralyzestatus;
+    private Texture returnmenu;
+
 
 
     public PlayStateFour(GameStateManager gsm) {
         super(gsm);
         playingState = PlayingState.INTRO;
 
-        fireballs = new ArrayList<Fireball>();
+        shadowballs = new ArrayList<Shadowball>();
         paralyze = 6;
         player = new Player(80, 120);
         mewtwo = new Mewtwo(80, 295);
@@ -76,6 +79,9 @@ public class PlayStateFour extends State {
         font.getData().setScale(1.5f);
         number = new Random();
         skipturn = false;
+        player.setHealth(5000);
+        returnmenu = new Texture("return_menu_button.png");
+
 
         loadIntroMessages();
         music = Gdx.audio.newMusic(Gdx.files.internal("playstate_music.mp3"));
@@ -107,29 +113,37 @@ public class PlayStateFour extends State {
 //            fireball1 = new Fireball(mewtwo.getPosition().x, mewtwo.getPosition().y);
 
             if (pattern == 0) {
-                fireballs.add(new Fireball(20, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(60, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(100, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(200, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(20, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(60, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(100, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(200, mewtwo.getPosition().y));
 
             } else if (pattern == 1) {
-                fireballs.add(new Fireball(200, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(100, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(150, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(200, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(100, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(150, mewtwo.getPosition().y));
 
 
             } else if (pattern == 2) {
-                fireballs.add(new Fireball(10, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(60, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(100, mewtwo.getPosition().y));
-                fireballs.add(new Fireball(140, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(10, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(60, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(100, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(140, mewtwo.getPosition().y));
 
 
             } else if (pattern == 3) {
-                enemyattack2 = new Fireblast(-10, 250);
+                enemyattack2 = new Beam(70, 400);
 
-            }else if(pattern == 4){
-                enemyattack2 = new Fireblast(100, 250);
+            } else if(pattern == 4){
+                shadowballs.add(new Shadowball(25, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(100, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(400, mewtwo.getPosition().y));
+                shadowballs.add(new Shadowball(300, mewtwo.getPosition().y+40));
+                shadowballs.add(new Shadowball(100, mewtwo.getPosition().y+40));
+                shadowballs.add(new Shadowball(10, mewtwo.getPosition().y+40));
+                shadowballs.add(new Shadowball(200, mewtwo.getPosition().y+100));
+                shadowballs.add(new Shadowball(400, mewtwo.getPosition().y+100));
+                shadowballs.add(new Shadowball(50, mewtwo.getPosition().y+100));
             }
 
 
@@ -170,6 +184,12 @@ public class PlayStateFour extends State {
     public void handleInput() {
         mouse.set(Gdx.input.getX()*2, (Gdx.graphics.getHeight()- Gdx.input.getY()*2), 0);
         cam.unproject(mouse);
+        if (Gdx.input.justTouched()) {
+            if (mouse.x > 2 && mouse.x < 133
+                    && mouse.y < 132 && mouse.y > 82) {
+                gsm.set(new MenuState(gsm));
+            }
+        }
         if(Gdx.input.justTouched()){
             System.out.println(Gdx.input.getX() +", "+ Gdx.input.getY());
             switch (playingState){
@@ -192,7 +212,10 @@ public class PlayStateFour extends State {
                             ButtonClicks = true;
                         }
 
+
                     }
+
+
                     if(mouse.x < 355 && mouse.x > 279 && mouse.y > 577 && mouse.y < 645) {
                         System.out.println("button clicked");
                         if (ButtonClicks == false) {
@@ -255,7 +278,7 @@ public class PlayStateFour extends State {
         }
 
         if(mewtwo.getHealth() <= 0){
-            gsm.set(new WinState(gsm));
+            gsm.set(new WinStateFour(gsm));
         }
         mewtwo.update(dt);
         if(playingState == DEFENDING){
@@ -265,18 +288,18 @@ public class PlayStateFour extends State {
                     player.takeDamage(enemyattack2.getDamage());
                 }
             }else {
-                for (int i = 0; i < fireballs.size(); i++) {
-                    fireballs.get(i).update(dt);
-                    if (fireballs.get(i).collides(player.getBounds())) {
-                        player.takeDamage(fireballs.get(i).getDamage());
+                for (int i = 0; i < shadowballs.size(); i++) {
+                    shadowballs.get(i).update(dt);
+                    if (shadowballs.get(i).collides(player.getBounds())) {
+                        player.takeDamage(shadowballs.get(i).getDamage());
                     }
                 }
             }
         }
-        if(fireballs.size() > 0) {
-            if (fireballs.get(0).getPosition().y < 0) {
+        if(shadowballs.size() > 0) {
+            if (shadowballs.get(0).getPosition().y < 0) {
                 fight();
-                fireballs.clear();
+                shadowballs.clear();
                 ButtonClicks = false;
                 lightning = null;
                 electroball = null;
@@ -333,14 +356,16 @@ public class PlayStateFour extends State {
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(player.getTexture(), player.getPosition().x, player.getPosition().y);
         sb.draw(mewtwo.getTexture(), mewtwo.getPosition().x, mewtwo.getPosition().y);
+        sb.draw(returnmenu, 0, 310, 70, 70);
+
 
 
         if(playingState == DEFENDING){
             if(enemyattack2 != null){
-                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y);
+                sb.draw(enemyattack2.getTexture(), enemyattack2.getPosition().x, enemyattack2.getPosition().y, 120, 700);
             }else {
-                for(int i = 0; i < fireballs.size(); i++) {
-                    sb.draw(fireballs.get(i).getTexture(), fireballs.get(i).getPosition().x, fireballs.get(i).getPosition().y, 40, 40);
+                for(int i = 0; i < shadowballs.size(); i++) {
+                    sb.draw(shadowballs.get(i).getTexture(), shadowballs.get(i).getPosition().x, shadowballs.get(i).getPosition().y, 40, 40);
                 }
                 //System.out.println(fireballs.get(i).getPosition().y);
             }
